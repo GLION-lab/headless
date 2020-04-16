@@ -1,3 +1,21 @@
+# 検証方法
+``` bash
+# wordpressのレポジトリをクローンし、dockerを起動（ブランチ: feature/test_gatsby）
+$ git clone git@github.com:GLION-lab/wordpress.git
+$ cd wordpress
+$ git checkout feature/test_gatsby
+$ docker-compose up -d
+localhost:8080にアクセスし、テスト用にいくつか記事とカテゴリー、タグを作成する
+# headlessレポジトリをクローンし、gatsbyを起動
+$ git clone git@github.com:GLION-lab/headless.git
+$ cd headless
+$ npm run develop
+localhost:8000にアクセス
+wordpressからのデータ取得graphqlはlocalhost:8000/___graphqlで確認可能
+graphqlの使用方法は commit: f2f2773 で追記したコメントアウト参照
+```
+
+
 # Gatsby v2 WordPress Starter
 
 This starter is forked from the
