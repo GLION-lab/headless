@@ -1,19 +1,20 @@
 # 検証方法
+1. wordpressを起動（readme参照）
+[レポジトリ](https://github.com/GLION-lab/wordpress/tree/feature/test-gatsby)  
+
+2. gatsbyを起動
 ``` bash
-# wordpressのレポジトリをクローンし、dockerを起動（ブランチ: feature/test_gatsby）
-$ git clone git@github.com:GLION-lab/wordpress.git
-$ cd wordpress
-$ git checkout feature/test_gatsby
-$ docker-compose up -d
-localhost:8080にアクセスし、テスト用にいくつか記事とカテゴリー、タグを作成する
-# headlessレポジトリをクローンし、gatsbyを起動
 $ git clone git@github.com:GLION-lab/headless.git
 $ cd headless
+$ npm install
 $ npm run develop
+```
 localhost:8000にアクセス
 wordpressからのデータ取得graphqlはlocalhost:8000/___graphqlで確認可能
-graphqlの使用方法は commit: f2f2773 で追記したコメントアウト参照
-```
+wordpressの下書きプレビュー画面は、localhost:8000/preview?id=${id}&_wpnonce=${_wpnonce}
+
+3. 他のwordpressと連携する場合
+gatsby-config.jsでgatsby-source-wordpressのoptionを編集する
 
 
 # Gatsby v2 WordPress Starter
