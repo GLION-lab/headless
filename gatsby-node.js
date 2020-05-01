@@ -60,6 +60,7 @@ exports.createPages = ({ actions, graphql }) => {
                 id
                 slug
                 status
+                content
               }
             }
           }
@@ -74,6 +75,7 @@ exports.createPages = ({ actions, graphql }) => {
 
       const postTemplate = path.resolve(`./src/templates/post.js`)
       const blogTemplate = path.resolve(`./src/templates/blog.js`)
+      const postPageTemplate = path.resolve('./src/templates/postPage.js')
 
       // In production builds, filter for only published posts.
       const allPosts = result.data.allWordpressPost.edges
@@ -84,14 +86,29 @@ exports.createPages = ({ actions, graphql }) => {
 
       // Iterate over the array of posts
       _.each(posts, ({ node: post }) => {
+        // Create a paginated post, e.g., /, /post/2, /post/3
+        if (post.content.includes('<!--nextpage-->')) {
+          const pages = post.content.split('<!--nextpage-->')
+          _.each(pages, (item, index) => {
+            createPage({
+              path: index === 0 ? `/${post.slug}/` : `/${post.slug}/${index}`,
+              component: postPageTemplate,
+              context: {
+                id: post.id,
+              },
+            })
+          })
+        }
         // Create the Gatsby page for this WordPress post
-        createPage({
-          path: `/${post.slug}/`,
-          component: postTemplate,
-          context: {
-            id: post.id,
-          },
-        })
+        else {
+          createPage({
+            path: `/${post.slug}/`,
+            component: postTemplate,
+            context: {
+              id: post.id,
+            },
+          })
+        }
       })
 
       // Create a paginated blog, e.g., /, /page/2, /page/3
