@@ -61,6 +61,12 @@ exports.createPages = ({ actions, graphql }) => {
                 slug
                 status
                 content
+                excerpt
+                title
+                author {
+                  slug
+                  name
+                }
               }
             }
           }
@@ -76,6 +82,7 @@ exports.createPages = ({ actions, graphql }) => {
       const postTemplate = path.resolve(`./src/templates/post.js`)
       const blogTemplate = path.resolve(`./src/templates/blog.js`)
       const postPageTemplate = path.resolve('./src/templates/postPage.js')
+      const searchTemplate = path.resolve('./src/templates/search.js')
 
       // In production builds, filter for only published posts.
       const allPosts = result.data.allWordpressPost.edges
@@ -118,6 +125,16 @@ exports.createPages = ({ actions, graphql }) => {
         itemsPerPage: 10,
         pathPrefix: ({ pageNumber }) => (pageNumber === 0 ? `/` : `/page`),
         component: blogTemplate,
+      })
+
+      createPage({
+        path: '/search',
+        component: searchTemplate,
+        context: {
+          postData: {
+            allPosts: posts
+          }
+        }
       })
     })
     .then(() => {
